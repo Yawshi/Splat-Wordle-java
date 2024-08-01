@@ -2,6 +2,20 @@ package wordle;
 
 import java.io.FileNotFoundException;
 
+/**
+ * Host for the Wordle games. Allows you to configure the rules of the game, as well as starting 
+ * one. All output is printed in the terminal, this returns nothing. <p>
+ * This has three methods: <p>
+ * - {@code gameMaster()} the only public method (besides {@code Keyboard}) in the package. Call 
+ * this to access the rest of the package. Gives prompts and allows the player to configure the 
+ * rules of the game, as well as starting one. <p>
+ * - {@code startGame()} helper method - starts a game based on the configured rules. <p>
+ * - {@code configureGame()} helper method - gives prompts to configure the rules of the game.
+ * @see BasicGame
+ * @see BlindGame
+ * @see Clue
+ * @see WordBank
+ */
 public class GameMaster {
     static int length = 5;
     static int guessMax;
@@ -9,8 +23,19 @@ public class GameMaster {
     static boolean isBlind = false;
     static boolean exit = false;
 
-    public static void gameMaster() throws FileNotFoundException {
-
+    /**
+     * Host for the Wordle games. Gives prompts (on the terminal) and allows the player to 
+     * configure the rules of the game, as well as starting one. <p>
+     * This is the only public method in the package (besides {@code Keyboard}). Call this to
+     * access the rest of the package.
+     * @throws FileNotFoundException if {@code WordBank} fails to find its files
+     * @throws EmptyWordBankException if {@code WordBank} runs out of words in a list
+     * @see BasicGame
+     * @see BlindGame
+     * @see Clue
+     * @see WordBank
+     */
+    public static void gameMaster() throws FileNotFoundException, EmptyWordBankException {
         while (!exit) {
             System.out.println();
             System.out.println("----- SPLATOON WORDLE -----");
@@ -51,7 +76,12 @@ public class GameMaster {
         }
     }
 
-    public static void startGame() throws FileNotFoundException {
+    /**
+     * Starts a game based on the configured rules. 
+     * @throws FileNotFoundException if {@code WordBank} fails to find its files
+     * @throws EmptyWordBankException if {@code WordBank} runs out of words in a list
+     */
+    static void startGame() throws FileNotFoundException, EmptyWordBankException {
         WordBank wordBank = new WordBank();
         if (isBlind) {
             // Blind Game unimplemented yet
@@ -74,7 +104,10 @@ public class GameMaster {
         }
     }
 
-    public static void configureGame() {
+    /**
+     * Gives prompts (on the terminal) to configure the rules of the game.
+     */
+    static void configureGame() {
         System.out.println();
         System.out.println("Word length can be between 4 to 6, or mixed! Playing with a mixed "
                             + "length allows guesses of length 4-6, and a clue will be given on "

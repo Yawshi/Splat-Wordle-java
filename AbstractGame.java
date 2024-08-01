@@ -19,11 +19,12 @@ package wordle;
  * @see BlindGame
  * @see Clue
  */
-public abstract class AbstractGame {
+abstract class AbstractGame {
     String solution, guess;
     int guessCount = 1;
     int guessMax;
     boolean mixedLength;
+    boolean[] isLetterUsed = new boolean[26];
     
     /**
      * Returns the solution of the game.
@@ -94,14 +95,32 @@ public abstract class AbstractGame {
     boolean isValidGuess(String guess) {
         if ((guess.length() == getSolution().length()) 
         || (isMixedLength() && (4 <= guess.length()) && (guess.length() <= 6))) {
-            for (int i = 0; i < guess.length(); i++) {
-                if (!('a' <= guess.charAt(i) && guess.charAt(i) <= 'z')
-                && !('A' <= guess.charAt(i) && guess.charAt(i) <= 'Z')) {
+            for (int pos = 0; pos < guess.length(); pos++) {
+                if (!('a' <= guess.charAt(pos) && guess.charAt(pos) <= 'z')
+                && !('A' <= guess.charAt(pos) && guess.charAt(pos) <= 'Z')) {
                     return false;
                 }
             }
             return true;
         } else return false;
+    }
+
+    void logUsedLetters(String guess) {
+        for (int pos = 0; pos < guess.length(); pos++) {
+            isLetterUsed[(int)guess.charAt(pos) - 65] = true;
+        }
+    }
+
+    void showUsedLetters() {
+        System.out.print("Remaining usused letters:           ");
+        for (int i = 0; i < 26; i++) {
+            if (!isLetterUsed[i]) {
+                System.out.print((char) (i+97));
+            } else {
+                System.out.print('-');
+            }
+        }
+        System.out.println();
     }
 
     /**

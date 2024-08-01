@@ -10,7 +10,7 @@ package wordle;
  * - {@code hasChar()} returns an array of booleans, for each letter in the guess, whether it
  * is the correct letter but not in the correct position.
  */
-public class Clue {
+class Clue {
 
     private boolean isExactMatch, isCorrectLength;
     private boolean[] isCorrectChar, hasChar;
