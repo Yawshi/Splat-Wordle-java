@@ -7,7 +7,18 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * 
+ * Represents a word bank, which stores the list of words that the wordle games can use as 
+ * solutions. After initialising with {@code WordBank()}, take a random word with 
+ * {@code getLength4()}, {@code getLength5()}, {@code getLength6()} or {@code getAny()}. <p>
+ * Scans the file {@code bank} and adds each word found to their respective lists: <p>
+ * > Each word comes with its explanation - some flavour text shown to the player at the end of
+ * each game. For example: <p>
+ * > > SPLAT : You SPLAT opponents by dealing enough damage to them with your weapon. <p>
+ * > The files may be editted freely, though each word and its explanation must take up one line 
+ * each and: <p>
+ * > > - the word must be of the proper word length (4, 5 or 6) <p>
+ * > > - the word must precede its explanation, and the two must be separated by " : " <p>
+ * > Lines that do not follow this format are ignored. <p>
  */
 class WordBank {
     private ArrayList<String> wordLength4 = new ArrayList<String>();
@@ -20,7 +31,7 @@ class WordBank {
      * found to their respective lists. <p>
      * Each word comes with its explanation - some flavour text shown to the player at the end of
      * each game. For example: <p>
-     * > SPLAT : You SPLAT opponent by dealing enough damage to them with your weapon. <p>
+     * > SPLAT : You SPLAT opponents by dealing enough damage to them with your weapon. <p>
      * The files may be editted freely, though each word and its explanation must take up one line 
      * each and: <p>
      * > - the word must be of the proper word length (4, 5 or 6) <p>
