@@ -4,23 +4,24 @@ package wordle;
  * Represents an instance of a Wordle game. Parent of {@code BasicGame} and {@code BlindGame}
  * classes. <p>
  * Has the following methods: <p>
- * - {@code getSolution()} returns the solution of the game. <p>
- * - {@code getGuessCount()} returns the order number of the guess, starting from 1. <p>
- * - {@code incrementGuessCount()} increments the guess count (order number of the guess) by 1. <p>
- * - {@code getGuessMax()} returns the maximum number of guesses that can be made this game. <p>
- * - {@code isMixedLength()} returns whether or not the game plays with the mixed length rule. <p>
- * - {@code makeGuess()} prompts the player to enter a guess, then returning a {@code String} 
+ * > - {@code getSolution()} returns the solution of the game. <p>
+ * > - {@code getGuessCount()} returns the order number of the guess, starting from 1. <p>
+ * > - {@code incrementGuessCount()} increments the guess count (order number of the guess) by 1. <p>
+ * > - {@code getGuessMax()} returns the maximum number of guesses that can be made this game. <p>
+ * > - {@code isMixedLength()} returns whether or not the game plays with the mixed length rule. <p>
+ * > - {@code getExplanation()} returns the flavour text for the solution. <p>
+ * > - {@code makeGuess()} prompts the player to enter a guess, then returning a {@code String} 
  * of the guess. <p>
- * - {@code isValidGuess()} checks and returns whether a guess is valid by the rules of the game.<p>
- * - {@code generateClue()} returns a {@code Clue} object for a guess. <p>
- * - {@code giveClue()} is {@code abstract} and prints (on the terminal) an interpretation 
+ * > - {@code isValidGuess()} checks and returns whether a guess is valid by the rules of the game.<p>
+ * > - {@code generateClue()} returns a {@code Clue} object for a guess. <p>
+ * > - {@code giveClue()} is {@code abstract} and prints (on the terminal) an interpretation 
  * of a {@code Clue} object based on the rules of the game. <p>
  * @see BasicGame
  * @see BlindGame
  * @see Clue
  */
 abstract class AbstractGame {
-    String solution, guess;
+    String solution, guess, explanation;
     int guessCount = 1;
     int guessMax;
     boolean mixedLength;
@@ -64,6 +65,10 @@ abstract class AbstractGame {
      */
     boolean isMixedLength() {
         return this.mixedLength;
+    }
+
+    String getExplanation() {
+        return this.explanation;
     }
 
     /**

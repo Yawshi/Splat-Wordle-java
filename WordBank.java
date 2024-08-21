@@ -3,42 +3,53 @@ package wordle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * Word bank for Wordle game solutions. Stores words from files length4, length5 and length6 (in 
- * /bank) into respective lists with constructor {@code WordBank()} and randomly returns one with 
- * methods {@code getLength4()}, {@code getLength5()}, {@code getLength6()} or {@code getAny()}.
+ * 
  */
 class WordBank {
-    ArrayList<String> wordLength4 = new ArrayList<String>();
-    ArrayList<String> wordLength5 = new ArrayList<String>();
-    ArrayList<String> wordLength6 = new ArrayList<String>();
+    private ArrayList<String> wordLength4 = new ArrayList<String>();
+    private ArrayList<String> wordLength5 = new ArrayList<String>();
+    private ArrayList<String> wordLength6 = new ArrayList<String>();
+    private HashMap<String,String> wordExplanation = new HashMap<String,String>();
     
     /**
-     * Constructor for {@code WordBank} object. Scans the files length4, length5 and length6 (in 
-     * /bank) and adds each word found to their respective lists. <p>
-     * The files may be editted freely, though each word must take up one line and be of the 
-     * proper word length. Capitalisation does not matter since the method converts all words to 
-     * upper case (or ALL CAPS) before adding them to the internal lists. <p>
-     * Throws {@code FileNotFoundException} if length4, length5 or length6 cannot be found, though 
+     * Constructor for {@code WordBank} object. Scans the file {@code bank} and adds each word 
+     * found to their respective lists. <p>
+     * Each word comes with its explanation - some flavour text shown to the player at the end of
+     * each game. For example: <p>
+     * > SPLAT : You SPLAT opponent by dealing enough damage to them with your weapon. <p>
+     * The files may be editted freely, though each word and its explanation must take up one line 
+     * each and: <p>
+     * > - the word must be of the proper word length (4, 5 or 6) <p>
+     * > - the word must precede its explanation, and the two must be separated by " : " <p>
+     * Lines that do not follow this format are ignored. <p>
+     * Throws {@code FileNotFoundException} if the file {@code bank} cannot be found, though 
      * this should not happen if all files are downloaded properly.
      * @throws FileNotFoundException if the file(s) cannot be found (likely not downloaded properly)
      */
     WordBank() throws FileNotFoundException {
-        try (Scanner sc = new Scanner(new File("src/wordle/bank/length4"))) {
+        try (Scanner sc = new Scanner(new File("src/wordle/bank"))) {
             while (sc.hasNextLine()) {
-                wordLength4.add(sc.nextLine().toUpperCase());
-            }
-        }
-        try (Scanner sc = new Scanner(new File("src/wordle/bank/length5"))) {
-            while (sc.hasNextLine()) {
-                wordLength5.add(sc.nextLine().toUpperCase());
-            }
-        }
-        try (Scanner sc = new Scanner(new File("src/wordle/bank/length6"))) {
-            while (sc.hasNextLine()) {
-                wordLength6.add(sc.nextLine().toUpperCase());
+                String[] line = sc.nextLine().split(" : ");
+                if (line.length == 2) {
+                    switch (line[0].length()) {
+                        case 4:
+                            wordLength4.add(line[0].toUpperCase());
+                            wordExplanation.put(line[0].toUpperCase(), line[1]);
+                            break;
+                        case 5:
+                            wordLength5.add(line[0].toUpperCase());
+                            wordExplanation.put(line[0].toUpperCase(), line[1]);
+                            break;
+                        case 6:
+                            wordLength6.add(line[0].toUpperCase());
+                            wordExplanation.put(line[0].toUpperCase(), line[1]);
+                            break;
+                    }
+                }
             }
         }
     }
@@ -96,9 +107,11 @@ class WordBank {
                 return getLength5();
             case 6:
                 return getLength6();
-            default:
-                return "";  // unreachable, this is only to "ensure" return type is String
         }
+        return ""; // unreachable, this is only to "ensure" return type is String
+    }
 
+    String getExplanation(String solution) {
+        return wordExplanation.get(solution);
     }
 }

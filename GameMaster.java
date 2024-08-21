@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
  * Host for the Wordle games. Allows you to configure the rules of the game, as well as starting 
  * one. All output is printed in the terminal, this returns nothing. <p>
  * This has three methods: <p>
- * - {@code gameMaster()} the only public method (besides {@code Keyboard}) in the package. Call 
+ * > - {@code gameMaster()} the only public method (besides {@code Keyboard}) in the package. Call 
  * this to access the rest of the package. Gives prompts and allows the player to configure the 
  * rules of the game, as well as starting one. <p>
- * - {@code startGame()} helper method - starts a game based on the configured rules. <p>
- * - {@code configureGame()} helper method - gives prompts to configure the rules of the game.
+ * > - {@code startGame()} helper method - starts a game based on the configured rules. <p>
+ * > - {@code configureGame()} helper method - gives prompts to configure the rules of the game.
  * @see BasicGame
  * @see BlindGame
  * @see Clue
@@ -44,16 +44,15 @@ public class GameMaster {
             System.out.println("Current game settings:");
             if (isMixedLength) {
                 System.out.println("Word length: mixed!");
-                guessMax = 7;
             } else {
                 System.out.println("Word length: " + length);
-                guessMax = 6;
             }
             if (isBlind) {
                 System.out.println("Clue system: blind!");
-                guessMax += 4;
+                guessMax = 12;
             } else {
                 System.out.println("Clue system: normal");
+                guessMax = 8;
             }
             System.out.println("Guesses allowed: " + guessMax);
             System.out.println();
@@ -83,24 +82,28 @@ public class GameMaster {
      */
     static void startGame() throws FileNotFoundException, EmptyWordBankException {
         WordBank wordBank = new WordBank();
-        if (isBlind) {
-            // Blind Game unimplemented yet
+        String solution = null;
+
+        if (isMixedLength) {
+            solution = wordBank.getAny();
         } else {
-            if (isMixedLength) {
-                new BasicGame(wordBank.getAny(), guessMax, isMixedLength);
-            } else {
-                switch (length) {
-                    case 4: 
-                        new BasicGame(wordBank.getLength4(), guessMax, isMixedLength);
-                        break;
-                    case 5: 
-                        new BasicGame(wordBank.getLength5(), guessMax, isMixedLength);
-                        break;
-                    case 6: 
-                        new BasicGame(wordBank.getLength6(), guessMax, isMixedLength);
-                        break;
-                }
+            switch (length) {
+                case 4: 
+                    solution = wordBank.getLength4();
+                    break;
+                case 5: 
+                    solution = wordBank.getLength5();
+                    break;
+                case 6: 
+                    solution = wordBank.getLength6();
+                    break;
             }
+        }
+
+        if (isBlind) {
+            new BlindGame(solution, guessMax, isMixedLength, wordBank.getExplanation(solution));
+        } else {
+            new BasicGame(solution, guessMax, isMixedLength, wordBank.getExplanation(solution));
         }
     }
 
@@ -115,7 +118,8 @@ public class GameMaster {
         System.out.println("Clue system can be blind instead! You will only be told how many "
                             + "you got in correct letter and position, and how many in "
                             + "correct letter but incorrect position. Extra hard!");
-        System.out.println("The number of guesses allowed will change accordingly.");
+        System.out.println("The number of guesses allowed is 8 on a normal game, and 12 on a blind "
+                            + "game, regardless of word length.");
 
         while (!exit) {
             System.out.println();
